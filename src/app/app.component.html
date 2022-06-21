@@ -1,0 +1,82 @@
+<!-- Component Template -->
+
+<div class="container">
+
+	<div class="columns is-centered">
+		<div class="box column is-one-third">
+
+			<h1 class="title has-text-centered">Password Generator</h1>
+
+			<section class="field">
+				<label>Enter length
+					<!-- TypeScript code here gets evaluated by Angular! So it is possible to pass parameters directly. To pass the Event object as parameter there is a reserved word named '$event' in Angular. -->
+					<input type="text" (input)="OnLengthInput($event)" />
+
+					<!--
+					When using TS strict mode using $event.target.value would give an error:
+					Property 'value' does not exist on type 'EventTarget' (although it _does_ exist), but $event.target would be OK (see OnNumbersChange)
+					  <input type="text" (input)="OnLengthInput($event.target.value)" />
+					-->
+				</label>
+			</section>
+
+			<section class="field">
+				<div class="control">
+					<label class="checkbox">
+						<!-- Notice that I don't pass any parameter here. To be able to use the 'Event' object later in the method the special '$event' argument/parameter is needed! Else an error will occur (Expected 1 argument). -->
+						<input type="checkbox" (change)="OnLettersChange()" />
+						Use Letters
+					</label>
+				</div>
+			</section>
+
+			<section class="field">
+				<div class="control">
+					<label class="checkbox">
+						<!-- Following code is not good practice. "!" is needed to avoid error: Argument of type 'EventTarget | null' is not assignable to parameter of type 'EventTarget'. -->
+						<input type="checkbox" (change)="OnNumbersChange($event.target!)" />
+						Use Numbers
+					</label>
+				</div>
+			</section>
+
+			<section class="field">
+				<div class="control">
+					<label class="checkbox">
+						<input type="checkbox" (change)="OnSymbolsChange($event)" />
+						Use Symbols
+					</label>
+				</div>
+			</section>
+
+<!-- Event binding syntax -->
+<!-- <button (click)="ClickedEventHandler()"
+[disabled]="!(passwordLength && (options.letters || options.numbers || options.symbols))"	>Generate!</button> -->
+
+			<button class="button is-link is-fullwidth" (click)="OnButtonClick()"
+				[disabled]="ButtonDisabledCondition()">Generate!</button>
+
+			<!-- *ngIf is a 'structural directive', changing the structure of HTML -->
+			<section class="box" *ngIf="password !== ''">
+				<label>Your Password</label>
+				<!-- Property binding syntax -->
+				<input class="input" type="text" readonly="readonly" [value]="password" />
+
+			<!-- MORE POSSIBILITES TO ACHIEVE SAME BEHAVIOR:
+			<input type="text" readonly="readonly" [value]="GetPassword()" />
+			<input type="text" readonly="readonly" value="{{ password }}" />
+			<input type="text" readonly="readonly" value="{{ GetPassword() }}" />
+			-->
+			</section>
+
+		</div>
+	</div>
+
+</div>
+
+
+<!-- Interpolation syntax:
+
+{{ password }}
+
+-->
